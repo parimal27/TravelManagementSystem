@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<table border="0">
+	{% for i in buslist %}
+	<tr>
+	<td>{{i.src}}</td><td>-</td><td>{{i.dst}}</td>	
+	</tr>
+	{% endfor %}
+</table>
+</body>
+</html>
+
+{% endblock %}

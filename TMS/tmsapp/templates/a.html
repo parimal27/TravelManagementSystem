@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+     {% block content %}
+
+     <script type="text/javascript">{% load admin_urls %}
+	function postdemo(){
+
+	 		$.ajax({
+	 			type:"GET",
+	 			url:"{% url 'ajx' %}",
+	 			data:{
+	 				'src':$(".src").val()
+	 			},
+	 		
+	 			success:function(data,status){
+	 			
+	 				$(".result").html(data);
+	 				
+	 			}
+	 		});
+    	/*$.get("/tmsapp/ajx/",{src:$("#src").val()},function(data,status){
+    		
+    	$("#result").html(data);
+    	});
+*/
+$( document ).ajaxStart( function() {
+
+	$( '#spinner' ).show();
+
+}).ajaxStop( function() {
+
+	$( '#spinner' ).hide();
+});
+
+    	}
+</script>
+<input type="text" name="" id="src">
+    <input type="button" name="" id="src1" onclick="postdemo()">
+    {% load static%}
+ 
+    <img src="{% static 'tmsapp/images/s.gif' %}" id="spinner" style="display:none;height:100px;width:100px;">
+    <div class="result"></div>
+     {% endblock %}

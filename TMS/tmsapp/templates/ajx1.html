@@ -1,0 +1,43 @@
+
+
+{% if buslist|length %}
+
+
+
+<ul id="blistul1" style="list-style-type: none;">
+
+{% for bus in buslist %}
+<li id="" onclick="searchdst('{{bus.src}}')" style="cursor: pointer;">
+{{ bus.src }}
+	</li>
+
+{%  endfor %}
+{% else %}
+<span id="nf">not found</span>
+{% endif %}
+</ul><!--
+<script type="text/javascript">
+													
+													var ia=document.getElementById('buslist').innerHTML;
+													;
+													var src=document.getElementById('blistul');
+													var ai=ia.split(",");
+														
+													for (var i = 0; i <= ai.length -1; i++) {
+															for (var j = 0; j <= ai.length -1; j++) {
+														if(ai[i]==ai[j] && i!=j || ai[j].search(/\w/)!=0){
+																ai.splice(j,1);
+														}}
+													}
+													for (var i = 0; i <= ai.length -1; i++) {
+
+														var st=document.createElement("li")
+													//src.innerHTML=(src.innerHTML+"<option>hello</option>");
+													
+													 st.text=ai[i];
+													
+													 src.appendChild(st);
+													
+													}
+													
+												</script>-->

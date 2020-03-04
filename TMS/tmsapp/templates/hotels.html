@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+  <!--start header-->
+<div class="top-bar imagetag">
+				<div class="container">
+					<div class="header">
+						<nav class="navbar navbar-default">
+							<div class="navbar-header navbar-left">
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+									<span class="sr-only">Toggle navigation</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>{% load admin_urls %}
+								<h1><a class="navbar-brand" href="{% url 'index' %}">TravelTime</span></a></h1>
+							</div>
+							<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+								<nav class="cl-effect-15" id="cl-effect-15">
+									<ul class="nav navbar-nav">
+										<li><a href="{% url 'index' %}">Home</a></li>
+												<!--	<li><a href="{% url 'index' %}">About</a></li>-->
+													<li class="active"><a href="{% url 'booking' %}">Booking</a></li>
+												<!--	<li><a href="{% url 'booking' %}">Gallery</a></li>-->
+		 					<li ><a href="{% url 'canclet' %}">Cancle Ticket</a></li>
+		 						<li class="dropdown">
+														{% if 'uid' in request.session %}
+														<a href="{% url 'logout' %}">{{request.session.uid }}(logout)</a>
+													{% else %}
+													
+													<a href="{% url 'login' %}">Login/Sign Up</a>
+													{% endif %}
+													</li>
+													<!--<li><a href="{% url 'booking' %}">Contact</a></li>-->
+												</ul>
+									
+								</nav>
+							</div>
+						</nav>
+				</div>
+			</div>
+		</div>
+		<!--end header-->
+{% load admin_urls %}<br><br><br><br>
+<div class="container" ><form id='form'  action="{% url 'bookhotel' %}">
+<table class="table table-hover">
+	<thead>
+		<th></th>
+		<th>Hotel Name</th>
+		<th>Hotel Address</th>
+	</thead>
+	<tbody>
+	{% for i in hotels %}
+	<tr>
+		<td><input type="radio" name="hid" value="{{i.hid}}"  id="{{i.hid}}"  autocomplete="off" required=""></td>
+		
+		<td>{{i.hname}} </td>
+		<td>{{i.add}}</td>
+		
+	</tr>
+		{% endfor %}
+
+</div>
+</tbody>
+
+</table><input type="hidden" value="{{codate}}" name="codate">
+		<input type="hidden" value="{{cidate}}" name="cidate"><input type="submit" value="submit"></form>
+</div>
+</body>
+</html>
+
+{% endblock %}

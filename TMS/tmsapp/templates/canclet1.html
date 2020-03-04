@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <!--start header-->
+<div class="top-bar imagetag">
+				<div class="container">
+					<div class="header">
+						<nav class="navbar navbar-default">
+							<div class="navbar-header navbar-left">
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+									<span class="sr-only">Toggle navigation</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>{% load admin_urls %}
+								<h1><a class="navbar-brand" href="{% url 'index' %}">TravelTime</span></a></h1>
+							</div>
+							<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+								<nav class="cl-effect-15" id="cl-effect-15">
+									<ul class="nav navbar-nav">
+										<li><a href="{% url 'index' %}">Home</a></li>
+												<!--	<li><a href="{% url 'index' %}">About</a></li>-->
+													<li ><a href="{% url 'booking' %}">Booking</a></li>
+												<!--	<li><a href="{% url 'booking' %}">Gallery</a></li>-->
+		 					<li class="active"><a href="{% url 'canclet' %}">Cancle Ticket</a></li>
+		 						<li class="dropdown">
+														{% if 'uid' in request.session %}
+														<a href="{% url 'logout' %}">{{request.session.uid }}(logout)</a>
+													{% else %}
+													
+													<a href="{% url 'login' %}">Login/Sign Up</a>
+													{% endif %}
+													</li>
+													<!--<li><a href="{% url 'booking' %}">Contact</a></li>-->
+												</ul>
+									
+								</nav>
+							</div>
+						</nav>
+				</div>
+			</div>
+		</div>
+		<!--end header-->
+<form id='form'  action="{% url 'canclebusticket' %}" method="post">{% csrf_token %}
+{% load admin_urls %}<br><br><br><br>
+<div class="container" >
+<div class="wthree_head_section">
+				<h3 class="w3l_header" style="font-size: 20pt;">Cancle your <span>Bus Tickets</span></h3>
+			</div>
+	
+{% if bus %}
+<script type="text/javascript">
+	
+			function clickcb(f,g)
+		{	//alert(g);
+
+			
+			var s=f.split(",");
+			
+			var c=document.getElementById(g);
+			if (c.checked) {
+
+				for (var i = 0; i < s.length-1; i++) 
+
+				$("#form").append('<input type="hidden" id="b'+s[i]+'" name="pass[]" value="'+s[i]+'">');
+			
+		}
+			else{
+				for (var i = 0; i <s.length ; i++) 
+				$("#b"+s[i]).remove();
+			
+		}}
+			/*var s=[];
+			s=f.split(',')
+			for (var i = 0; i <s.length ; i++) {
+				$("#form1").append('<input type="hidden" name="pass[]" value="'+s[i]+'">');
+			}*/
+		
+		</script>
+
+<table class="table table-hover">
+	<thead>
+		<th></th>
+		<th>Seats</th>
+		<th>Source</th>
+		<th>Destination</th>
+		<th>Tour Date</th>
+		
+	</thead>
+	<tbody>
+	{% for i in bus %}
+	<tr>
+		<td><input type="checkbox" name="sname" value="" onclick ="clickcb('{% for j in i %}{{j.bsbid}},{% endfor %}','{{i.0.rdate}}{{i.0.rtime}}')" id="{{i.0.rdate}}{{i.0.rtime}}"  autocomplete="off">
+		</td> <td>{% for j in i %}{{j.seatno}},{% endfor %}
+		</td><td id="srcdst">{{i.0.src}}
+	
+		</td><td>{{i.0.dst}}</td><td>{{i.0.bdate}}</td>
+		</tr>{% endfor %}
+
+</tbody>
+
+</table><input type="submit" name="" value="cancle">{{error}}
+{% else %}<table class="table table-hover"><tr><td>
+no reservation<td></td>
+</table>
+{% endif %}
+</form>
+<div class="container" >
+<form  action="{% url 'cancleflight' %}"  name="m" method="post">	{% csrf_token %}
+	<div class="wthree_head_section">
+				<h3 class="w3l_header" style="font-size: 20pt;">Cancle your <span>Flight Ticket</span></h3>
+			</div>
+			{% if flight %}<div id="form1">
+			
+			
+	<script type="text/javascript">
+	function clickcf(f,g)
+		{	//alert(g);
+
+			
+			var s=f.split(",");
+			
+			var c=document.getElementById(g);
+			if (c.checked) {
+
+				for (var i = 0; i < s.length-1; i++) 
+
+				$("#form1").append('<input type="hidden" id="f'+s[i]+'" name="pass[]"       value="'+s[i]+'">');
+			
+		}
+			else{
+				for (var i = 0; i <s.length ; i++) 
+				$("#f"+s[i]).remove();
+			
+		}}
+			/*var s=[];
+			s=f.split(',')
+			for (var i = 0; i <s.length ; i++) {
+				$("#form1").append('<input type="hidden" name="pass[]" value="'+s[i]+'">');
+			}*/
+		
+		</script>
+<table class="table table-hover">
+	<thead>
+		<th></th>
+		<th>Seats</th>
+		<th>Source</th>
+		<th>Destination</th>
+		<th>Tour Date</th>
+		
+	</thead>
+	<tbody>
+	{% for i in flight %}
+	<tr>
+		<td><input type="checkbox" name="sname" value=""  onclick="clickcf('{% for j in i %}{{j.fsbid}},{% endfor %}','{{i.0.rdate}}{{i.0.rtime}}')" id="{{i.0.rdate}}{{i.0.rtime}}"  autocomplete="off">
+		</td><td>{% for j in i %}{{j.seatno}},{% endfor %}
+	
+		</td><td id="srcdst">{{i.0.spoint}}
+	
+		</td><td>{{i.0.epoint}}</td><td>{{i.0.bdate}}</td>
+		</tr>{% endfor %}
+
+</tbody>
+
+</table><input type="submit" name="" value="submit"></div>{{ferror}}{% else %} <table class="table table-hover" style="margin-left: -1.1%;"><tr><td>
+no reservation<td></td>
+</table>{% endif %}</form>
+</div>	
+</body>
+</html>
+
+{% endblock %}

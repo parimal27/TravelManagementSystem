@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>bus List</h1>
+
+    {% if bus_list %}
+    <ul>
+
+      {% for bus in bus_list %}
+      <li>
+        <a href="">{{ bus.betstation }}</a> 
+      </li>
+      {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>There are no students registered.</p>
+    {% endif %}       
+   
+{% endblock %}

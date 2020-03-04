@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+
+{%  block content %}<!--start header-->
+<div class="top-bar imagetag">
+				<div class="container">
+					<div class="header">
+						<nav class="navbar navbar-default">
+							<div class="navbar-header navbar-left">
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+									<span class="sr-only">Toggle navigation</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>{% load admin_urls %}
+								<h1><a class="navbar-brand" href="{% url 'index' %}">TravelTime</span></a></h1>
+							</div>
+							<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+								<nav class="cl-effect-15" id="cl-effect-15">
+									<ul class="nav navbar-nav">
+										<li><a href="{% url 'index' %}">Home</a></li>
+												<!--	<li><a href="{% url 'index' %}">About</a></li>-->
+													<li class="active"><a href="{% url 'booking' %}">Booking</a></li><li ><a href="{% url 'canclet' %}">Cancle Ticket</a></li>
+													<!--<li><a href="{% url 'booking' %}">Gallery</a></li>-->
+		 						<li class="dropdown">
+														{% if 'uid' in request.session %}
+														<a href="{% url 'logout' %}">{{request.session.uid}}(logout)</a>
+													{% else %}
+													
+													<a href="{% url 'login' %}">Login/Sign Up</a>
+													{% endif %}
+													</li>
+													<!--<li><a href="{% url 'booking' %}">Contact</a></li>-->
+												</ul>
+									
+								</nav>
+							</div>
+						</nav>
+				</div>
+			</div>
+		</div>
+		<!--end header-->
+		<div class="container">
+<div class="row" style="margin-top:2%; ">
+	<div class="col-md-4">
+				 	<div id="holder" > 
+						<ul  id="place"  >
+				        </ul>    
+					</div>
+					<div style="float:left;"> 
+					<ul id="seatDescription">
+						<!--<li>Available Seat</li>
+						<li style="background: red;padding:2px;color:white">Booked Seat is red</li>
+						<li>Selected Seat</li>-->
+					</ul>
+					</div>
+				        <div style="clear:both;width:100%">
+						<input type="button" id="btnShowNew" value="add selected Seats" />
+						<input type="button" id="btnShow" value="Edit" style="display: none;" /><div id="btnShowNew1"></div>           
+				        </div><script>var settings = {
+				               rows:{{nos}},
+				               cols: 4,
+				               rowCssPrefix: 'row-',
+				               colCssPrefix: 'col-',
+				               seatWidth: 35,
+				               seatHeight: 35,
+				               seatCss: 'seat',
+				               selectedSeatCss: 'selectedSeat',
+				               selectingSeatCss: 'selectingSeat'
+				           };
+						   //
+						   var init = function (reservedSeat) {
+				                var sn={{nos}};
+				                var io=1;
+				                var str = [], seatNo, className;
+				               
+				               for (i = 0; i < settings.rows; i++) {
+				                    for (j = 0; j < settings.cols; j++) {
+				                       if(io!=sn+1){
+				                        seatNo = io;//* settings.rows + 1);
+				                        className = settings.seatCss + ' ' + settings.rowCssPrefix + i.toString() + ' ' + settings.colCssPrefix + j.toString();
+				                        if ($.isArray(reservedSeat) && $.inArray(seatNo, reservedSeat) != -1) {
+				                            className += ' ' + settings.selectedSeatCss;
+				                        }
+				                        str.push('<li class="' + className + '"' +
+				                                  'style="cursor:pointer;height:25px;border-radius:3px;top:' + (i * settings.seatHeight).toString() + 'px;left:' + (j * settings.seatWidth).toString() + 'px" onclick="seatclicktotal()">' +
+				                                  '<center><a title="' + seatNo + '">' + seatNo + '</a></center>' +
+				                                  '</li>');io++;}else{break;}
+				                    }
+				              }
+				              $('#place').html(str.join(''));
+				            };
+				            //case I: Show from starting
+				            //init();
+				            var click=0;
+				 			function seatclicktotal() {
+				 				click=click+1;
+				 				
+				 				if(click==({{nop}}))
+				 				{	alert('Your seat(s) are selected');
+				 					$("#holder").hide();
+				 									
+				    //alert(str.join(','));
+				 				}
+				 			}
+				            //Case II: If already booked
+				            var bookedSeats = [];
+				            {% for i in bnos %}
+
+				            bookedSeats.push({{i.seatno}});
+				            {% endfor %}
+				            init(bookedSeats);var sn={{nos}};
+				            document.getElementById('place').style.height=sn*35/3.5+'px';
+				            
+				    </script><script>
+							$('.' + settings.seatCss).click(function () {
+				if ($(this).hasClass(settings.selectedSeatCss)){
+				    alert('This seat is already reserved');
+				}
+				else{
+				    $(this).toggleClass(settings.selectingSeatCss);
+				    }
+				});
+				 
+				$('#btnShow').click(function () {
+				    var str = [];
+				    $.each($('#place li.' + settings.selectedSeatCss + ' a, #place li.'+ settings.selectingSeatCss + ' a'), function (index, value) {
+				        str.push($(this).attr('title'));
+				    });
+				    alert(str.join(','));
+
+				});
+				 
+				$('#btnShowNew').click(function () {
+				   
+				    var str = [], item;
+				    $.each($('#place li.' + settings.selectingSeatCss + ' a'), function (index, value) {
+				        item = $(this).attr('title');                   
+				        str.push(item);      
+				       //  alert(str.join(','));             
+				    });
+
+				    var str = [], item;
+				    $.each($('#place li.' + settings.selectingSeatCss + ' a'), function (index, value) {
+				        item = $(this).attr('title');                   
+				        str.push(item);                   
+				    });
+
+
+				  
+				    for(var i=0; i<str.length;i++)
+				    {	
+				    	$("#formdata").append('<div class="aitssubmitw3ls"><input type="text" value="'+str[i]+'" name="seat[]" readonly></div><div class="clear"></div>');
+				    }
+				   //
+				   $("#formdata").append('<div class="clear"></div><div class="aitssubmitw3ls"><input type="submit" name="submit" value="Submit"></div>');
+				   $('#btnShowNew').hide();
+				    
+				});
+			
+					
+			
+							</script>
+	</div>
+	<div class="col-md-8" >
+	<form action="{% url 'fbookseat' %}" method="post" id="formdata">{% csrf_token %}</form><div id="merror"></div>
+		</div><script type="text/javascript">
+	$(document).ready(function(){
+		var nop={{nop}};
+		for (var i = 1; i <=nop; i++) 
+		$("#formdata").append('<input type="hidden" value="{{fid}}" name="fid"><input type="hidden" value="{{date}}" name="date"><input type="hidden" value="{{f1_info.seatfare}}" name="seatfare"><input type="hidden" value="{{epoint}}" name="epoint"><input type="hidden" value="{{spoint}}" name="spoint"><input type="hidden" value="{{nop}}" name="nop">	<div class="w3_agileits_main_grid w3l_main_grid"><div class="agileits_grid"><h5>Passenger'+i+' Name * </h5><div class="name"><input type="text" name="pass[]" placeholder="Passenger'+i+' Name" required=""></div><div class="clear"></div></div></div><div class="w3_agileits_main_grid w3l_main_grid"><div class="agileits_grid"><h5>Age * </h5><input type="number" name="age[]"  required="" max=99 min="1" value="1" style="width: 100%;background: #fff;color: #4B4B4B;padding: 13px;font-size: 14px;border: 1px solid #a9a9a9;box-sizing: border-box;" required></div></div>');
+		
+		$("#formdata").append('<div class="w3_agileits_main_grid w3l_main_grid"><div class="agileits_grid"><h5>Email * </h5><div class="name"><input type="Email" name="email" placeholder="Your Email" required=""></div><div class="clear"></div><div class="w3_agileits_main_grid w3l_main_grid"><div class="agileits_grid"><h5>Mobile * </h5><div class="name"><input type="text" name="mno" placeholder="Your Mobile" required="" onblur="merror()" onkeypress="return mer(event)" id="mno" maxlength="10" minlength=10></div>');
+
+	});
+	function mer(event) {
+		if((event.charCode >= 48 && event.charCode <= 57) || event.keyCode==8) return true; 
+		else 
+		return false;
+	}
+	function merror() {
+		var m=$("#mno").val();
+
+		if(m.length==0){
+			$("#merror").html("<span>please enter mobile....</span>");
+			
+	}else{
+	if(m.length<10){ 			$("#merror").html("<span>mobile no must be 10 digit....</span>");
+ 		}else if (m.length>10) { 			
+ 		$("#merror").html("<span>mobile no must be 10 digit....</span>");
+		 }
+}}
+</script>
+</div><!--row-->
+</div><!--container-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<!--end code....--><!--<form id="seatform">
+<div id="noofseats">
+
+{{ nos.noofseats }}
+
+</div>
+<script type="text/javascript">
+	
+var sf=document.getElementById('seatformat');
+var nf=document.getElementById('noofseats').innerHTML;
+
+var ck=document.getElementById('noofseats');
+ck.innerHTML=ck.innerHTML+"<br>";
+for(var i=1;i<=nf;i++)
+{
+
+	
+	/*ck.id='seat';
+	ck.type="checkbox";
+	ck.name="seat";
+	ck.value=i;
+	sf.appendChild(ck);*/
+	ck.innerHTML=ck.innerHTML+"<span class='seat' style='margin-left:0.7%;'><input  type='checkbox' name='seat' value='"+i+"'></span>";
+
+if(i%4==0){	ck.innerHTML=ck.innerHTML+"<br>";
+for (var j = i-3; j<= i; j++) {
+	if(j<9){ ck.innerHTML=ck.innerHTML+"<span class='seat'>&nbsp;&nbsp;&nbsp;"+j+"</span>";	 }else{
+ck.innerHTML=ck.innerHTML+"<span class='seat' style='margin-left:0.6%;'>"+j+"</span>";	}
+}
+ck.innerHTML=ck.innerHTML+"<br>";
+}
+
+}
+ck.innerHTML=ck.innerHTML+"<br>";
+rem=(i-2)%4;
+
+for(var j=(i-2);j<(i-1)+rem;j++)
+{
+ck.innerHTML=ck.innerHTML+"<span class='seat'>&nbsp;"+j+"</span>";
+}
+</script>
+</form>-->
+{% endblock %}
