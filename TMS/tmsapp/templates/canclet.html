@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{%  block content %}<!--start header-->
+<div class="top-bar imagetag">
+				<div class="container">
+					<div class="header">
+						<nav class="navbar navbar-default">
+							<div class="navbar-header navbar-left">
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+									<span class="sr-only">Toggle navigation</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>{% load admin_urls %}
+								<h1><a class="navbar-brand" href="{% url 'index' %}">TravelTime</span></a></h1>
+							</div>
+							<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+								<nav class="cl-effect-15" id="cl-effect-15">
+									<ul class="nav navbar-nav">
+										<li><a href="{% url 'index' %}">Home</a></li>
+												<!--	<li><a href="{% url 'index' %}">About</a></li>-->
+													<li ><a href="{% url 'booking' %}">Booking</a></li>
+													<li class="active"><a href="{% url 'canclet' %}">Cancle Ticket</a></li>
+													<!--<li><a href="{% url 'booking' %}">Gallery</a></li>-->
+		 						<li class="dropdown">
+														{% if 'uid' in request.session %}
+														<a href="{% url 'logout' %}">{{request.session.uid}}(logout)</a>
+													{% else %}
+													
+													<a href="{% url 'login' %}">Login/Sign Up</a>
+													{% endif %}
+													</li>
+													<!--<li><a href="{% url 'booking' %}">Contact</a></li>-->
+												</ul>
+									
+								</nav>
+							</div>
+						</nav>
+				</div>
+			</div>
+		</div>
+		<!--end header-->
+		<div class="container">
+<div class="row" style="margin-top:2%; ">
+	<div class="col-md-12"><br>
+			<div class="wthree_head_section">
+				<h3 class="w3l_header">Cancle  your <span style="">Ticket</span></h3>
+			</div>	 	
+	</div></div>
+<div class="row">
+	<div class="col-md-12" id="type">
+
+		<div class="w3_agileits_main_grid w3l_main_grid">
+										<div class="agileits_grid">
+											<h5 id="inof">Travel Type* </h5>
+											<div class="name">
+												<select  required="" style=" outline: none;
+    width: 100%;
+    background: #fff;
+    color: #4B4B4B;
+    padding: 13px;
+    font-size: 14px;
+    border: 1px solid #a9a9a9;
+    box-sizing: border-box;" id="ttype"><option value="" selected=""></option><option value="{% url 'canclebusticket' %}">Bus</option>
+<option value="{% url 'cancleflightticket' %}">Flight</option></select>
+											</div>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clearfix"></div>
+									</div></div><br><div id="merror">{{error}}</div>
+	<div class="row" id="nop" style="display: none;">
+	<div class="col-md-12" >
+<div id="cvb">
+		<div class="w3_agileits_main_grid w3l_main_grid">
+										<div class="agileits_grid">
+											<h5 id="inof">Enter no of seat you want to Cancle * </h5>
+											<div class="name">
+												<input type="number"  required="" style=" outline: none;
+    width: 100%;
+    background: #fff;
+    color: #4B4B4B;
+    padding: 13px;
+    font-size: 14px;
+    border: 1px solid #a9a9a9;
+    box-sizing: border-box;" max="5" min="1" id="noc" value="1">
+											</div>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clearfix"></div>
+											<div class="aitssubmitw3ls">
+												<input type="submit" name="submit" value="Submit" id="submits">
+			</div>								</div>
+	<form  method="post" id="formdata">{% csrf_token %}
+
+	</form><div class="clearfix"></div>
+		</div><script type="text/javascript">
+	$(document).ready(function(){
+		$("#ttype").change(function() {
+			$("#formdata").attr('action',$("#ttype").val())
+			$("#type").hide()
+			$("#nop").show();
+		});
+		$("#submits").click(function(){
+		var nop=$("#noc").val();
+		for (var i = 1; i <=nop; i++) 
+		$("#formdata").append('<div class="w3_agileits_main_grid w3l_main_grid"><div class="agileits_grid"><h5>Passenger'+i+' Seat Refrence No. * </h5><div class="name"><input type="text" name="pass[]" placeholder="Passenger'+i+' Seat Refrence No" required="" onkeypress="return mer(event)"></div><div class="clear"></div>');
+	$("#formdata").append('<div class="clearfix"></div><div class="aitssubmitw3ls"><input type="submit" name="submit" value="Submit" id="submits"></div>');
+$("#noc").hide();
+$("#cvb").hide();
+$("#submits").hide();		
+});
+	});
+	function mer(event) {
+		if((event.charCode >= 48 && event.charCode <= 57) || event.keyCode==8) return true; 
+		else 
+		return false;
+	}
+	function merror() {
+		var m=$("#mno").val();
+
+		if(m.length==0){
+			$("#merror").html("<span>please enter mobile....</span>");
+			
+	}else{
+	if(m.length<10){ 			$("#merror").html("<span>mobile no must be 10 digit....</span>");
+ 		}else if (m.length>10) { 			
+ 		$("#merror").html("<span>mobile no must be 10 digit....</span>");
+		 }
+}}
+</script>
+</div><!--row-->
+</div><!--container-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<!--end code....--><!--<form id="seatform">
+<div id="noofseats">
+
+{{ nos.noofseats }}
+
+</div>
+<script type="text/javascript">
+	
+var sf=document.getElementById('seatformat');
+var nf=document.getElementById('noofseats').innerHTML;
+
+var ck=document.getElementById('noofseats');
+ck.innerHTML=ck.innerHTML+"<br>";
+for(var i=1;i<=nf;i++)
+{
+
+	
+	/*ck.id='seat';
+	ck.type="checkbox";
+	ck.name="seat";
+	ck.value=i;
+	sf.appendChild(ck);*/
+	ck.innerHTML=ck.innerHTML+"<span class='seat' style='margin-left:0.7%;'><input  type='checkbox' name='seat' value='"+i+"'></span>";
+
+if(i%4==0){	ck.innerHTML=ck.innerHTML+"<br>";
+for (var j = i-3; j<= i; j++) {
+	if(j<9){ ck.innerHTML=ck.innerHTML+"<span class='seat'>&nbsp;&nbsp;&nbsp;"+j+"</span>";	 }else{
+ck.innerHTML=ck.innerHTML+"<span class='seat' style='margin-left:0.6%;'>"+j+"</span>";	}
+}
+ck.innerHTML=ck.innerHTML+"<br>";
+}
+
+}
+ck.innerHTML=ck.innerHTML+"<br>";
+rem=(i-2)%4;
+
+for(var j=(i-2);j<(i-1)+rem;j++)
+{
+ck.innerHTML=ck.innerHTML+"<span class='seat'>&nbsp;"+j+"</span>";
+}
+</script>
+</form>-->
+{% endblock %}

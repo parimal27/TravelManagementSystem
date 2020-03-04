@@ -1,0 +1,165 @@
+
+{% extends 'base.html' %}
+
+     {% block content %}
+
+				<div class="top-bar">
+				<div class="container">
+					<div class="header">
+						<nav class="navbar navbar-default">
+							<div class="navbar-header navbar-left">
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+									<span class="sr-only">Toggle navigation</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>{% load admin_urls %}
+								<h1><a class="navbar-brand" href="{% url 'index' %}">TravelTime</span></a></h1>
+							</div>
+							<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+								<nav class="cl-effect-15" id="cl-effect-15">
+									<ul class="nav navbar-nav">
+										<li class="active"><a href="{% url 'index' %}">Home</a></li>
+													<!--<li><a href="{% url 'index' %}">About</a></li>-->
+													<li><a href="{% url 'booking' %}">Booking</a></li>
+													<li ><a href="{% url 'canclet' %}">Cancle Ticket</a></li>
+													<!--<li><a href="{% url 'index' %}">Gallery</a></li>-->
+													
+													{% ifequal user_active.active 1 %}
+													<li ><a href="{% url 'logout' %}">{{user_active.uid}}(logout)</a>
+														
+						
+													</li>{% else %}
+													<li ><a href="{% url 'login' %}">Login/SignUp</a>
+														
+						
+													</li>{% endifequal %}<!--
+													<li><a href="{% url 'index' %}">Contact</a></li>-->
+												</ul>
+									
+								</nav>
+							</div>
+						</nav>
+				</div>
+			</div>
+		</div>		<!-- //Top-Bar -->
+		<!-- w3-banner -->
+	<div class="banner" >
+		<div class="banner-dott1">
+			<div class="w3-banner">
+			
+				<div  class="callbacks_container">
+				<ul class="rslides" id="slider3">
+					<li>
+						<div class="banner-text">
+					
+							<h3>&nbsp;Enjoy Your Dream Vacation</h3>
+							
+								<a href="{% if request.session.uid %}{% url 'booking' %}{% else %}{% url 'login' %}{% endif %}" class="read-agileits">Start Up</a>
+						</div>
+					</li>
+				
+				</ul>
+			</div>	
+			
+			</div>
+					
+		<!-- //w3-banner -->
+		</div>
+	</div>
+	<!--<div class="w3ls-section wthree-pricing" id="pricing">	
+		<div class="container">
+			<div class="wthree_head_section">
+				<h3 class="w3l_header">Tour <span>Packages</span></h3>
+				<p>A travel agency is a private retailer or public service that provides travel and tourism related services to the public on behalf of suppliers such as activities.</p>
+			</div>
+			<div class="pricing-grids-info">
+								<div class="pricing-grid grid-one">
+									<div class="w3ls-top">
+										<img src="../static/images/g8.jpg" class="img-responsive" alt="">
+									</div>
+									<div class="w3ls-bottom">
+										<ul class="count">
+											<h3>Thailand</h3>
+											<li>2 Days</li>
+											<li>Hotel </li>
+											<li>City Tour</li>
+											<li>BBQ dinner</li>
+										</ul>
+										<h4> 900<span class="sup">$</span> </h4>
+										<div class="more">
+											<a href="booking.html">Book Now</a>				
+										</div>
+									</div>
+								</div>
+								<div class="pricing-grid grid-two">
+									<div class="w3ls-top">
+										<img src="../static/images/g4.jpg" class="img-responsive" alt="">
+									</div>
+									<div class="w3ls-bottom">
+										<ul class="count">
+											<h3>Newyork</h3>
+											<li>2 Days</li>
+											<li>Hotel </li>
+											<li>City Tour</li>
+											<li>BBQ dinner</li>
+										</ul>
+										<h4> 750<span class="sup">$</span> </h4>
+										<div class="more">
+											<a href="booking.html">Book Now</a>				
+										</div>
+									</div>
+								</div>
+								<div class="pricing-grid grid-three">
+									<div class="w3ls-top">
+										<img src="../static/images/g5.jpg" class="img-responsive" alt="">
+									</div>
+									<div class="w3ls-bottom">
+										<ul class="count">
+											<h3>Australia</h3>
+											<li>2 Days</li>
+											<li>Hotel </li>
+											<li>City Tour</li>
+											<li>BBQ dinner</li>
+										</ul>
+										<h4> 850<span class="sup">$</span> </h4>
+										<div class="more">
+											<a href="booking.html">Book Now</a>			
+										</div>
+									</div>
+								</div>
+								<div class="zb pricing-grid grid-four">
+									<div class="w3ls-top">
+										<img src="../static/images/g11.jpg" class="img-responsive" alt="">
+									</div>
+									<div class="w3ls-bottom">
+										<ul class="count">
+											<h3>Dubai</h3>
+											<li>2 Days</li>
+											<li>Hotel </li>
+											<li>City Tour</li>
+											<li>BBQ dinner</li>
+										</ul>
+										<h4> 950<span class="sup">$</span> </h4>
+										<div class="more">
+											<a href="booking.html">Book Now</a>				
+										</div>
+									</div>
+								</div>
+								<div class="clearfix"> </div> 
+				End-slider-script
+			</div>
+		</div>	
+	</div>-->	
+	<!--//pricing-->
+
+	<!-- counter -->
+	
+<!-- //counter -->
+
+	<div class="agileinfo_copyright" style="background: #ED1C24;">
+		<p>© 2018 TravelTime. All rights reserved | Design by parimal</p>
+	</div>
+
+{% endblock %}

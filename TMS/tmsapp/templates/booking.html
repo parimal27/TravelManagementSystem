@@ -1,0 +1,653 @@
+
+{% extends 'base.html' %}
+
+     {% block content %}
+
+
+		<script type="text/javascript">
+			
+			function postdemo(){
+
+	 		$.ajax({
+	 			type:"GET",
+	 			url:"{% url 'ajx' %}",
+	 			data:{
+	 				'src':$(".src").val()
+	 			},
+	 		
+	 			success:function(data,status){
+	 			
+	 				$(".result").css("display","block");
+	 				$(".result").html(data);
+	 				if($(".src").val()=='')
+	 					$(".result").css("display","none");
+	 			}
+	 		});
+			}
+			function checkfromto()
+			{
+				if ($(".src").val()==$("#stdst").val()) {alert(" Destination and source are same.......");return false;}else {return true;}
+			}
+			function postdst(){
+
+	 		$.ajax({
+	 			type:"GET",
+	 			url:"{% url 'ajx1' %}",
+	 			data:{
+	 				'src':$("#stdst").val()
+	 			},
+	 		
+	 			success:function(data,status){
+	 				
+	 				$("#resultdst").css("display","block");
+	 				$("#resultdst").html(data);
+	 				if($("#stdst").val()=='')
+	 					$("#resultdst").css("display","none");
+	 			}
+	 		});
+			}
+			function searchdst(data){
+				
+				$("#stdst").val(data);
+				$("#resultdst").css("display","none");
+				
+			}
+
+			function clickli(data){
+
+				$(".src").val(data);
+				$(".result").css("display","none");
+			}
+		/*function hidedemo(){
+				if ($(".result").css("display")=='block') { }
+				$(".result").css("display","none");
+				if($("#nf").text()=='not found')
+				$(".src").val('');
+			}*/
+		</script>
+				<div class="top-bar imagetag">
+				<div class="container">
+					<div class="header">
+						<nav class="navbar navbar-default">
+							<div class="navbar-header navbar-left">
+								<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+									<span class="sr-only">Toggle navigation</span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>{% load admin_urls %}
+								<h1><a class="navbar-brand" href="{% url 'index' %}">TravelTime</span></a></h1>
+							</div>
+							<!-- Collect the nav links, forms, and other content for toggling -->
+							<div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+								<nav class="cl-effect-15" id="cl-effect-15">
+									<ul class="nav navbar-nav">
+										<li><a href="{% url 'index' %}">Home</a></li>
+													<!--<li><a href="{% url 'index' %}">About</a></li>-->
+													<li class="active"><a href="{% url 'booking' %}">Booking</a></li>
+													<li><a href="{% url 'canclet' %}">Cancle Ticket</a></li>
+													<!--<li><a href="{% url 'booking' %}">Gallery</a></li>-->
+		 						<li class="dropdown">{% if 'uid' in request.session %}
+														<a href="{% url 'logout' %}">{{request.session.uid}}(logout)</a>
+													{% else %}
+													
+													<a href="{% url 'login' %}">Login/Sign Up</a>
+													{% endif %}</li>
+													<!--<li><a href="{% url 'booking' %}">Contact</a></li>-->
+
+												</ul>
+									
+								</nav>
+							</div>
+						</nav>
+				</div>
+			</div>
+		</div>
+		<!-- //Top-Bar -->
+		<!-- w3-banner -->
+	
+<!-- //banner -->
+<!-- main-section -->
+	<div class="head agile">
+	<div class="wthree_head_section">
+				<h3 class="w3l_header">Start your <span>journey</span></h3>
+			</div>
+		<div class="login w3" >
+			<div class="sap_tabs" >
+				<div id="horizontalTab" style="display: block; margin: 0px;">
+					<ul class="resp-tabs-list">
+						<li class="resp-tab-item" ><span>Flights</span></li>
+						<li class="resp-tab-item" ><label>/</label><span>Bus</span></li>
+						<li class="resp-tab-item" ><label>/</label><span>Hotels</span></li>
+					
+						
+					</ul>				  	 
+					<div class="resp-tabs-container">
+						<div class="tab-1 resp-tab-content" >
+							<div class="login-top agileinfo">
+								<h2>Search for flights</h2>
+								<script type="text/javascript">
+									function checkfsd() {
+										if($(".fsrc").val()==$(".fdst").val())
+										{	alert("Source and Destination must be differ.....");return false;
+										}else
+											return true;
+
+									}
+								</script>
+								<form action="{% url 'searchflight' %}" method="get" onsubmit="return checkfsd()">
+									<!--<div class="w3_agileits_main_grid w3l_main_grid">
+										<div class="agileits_grid">
+											<h5>Name * </h5>
+											<div class="name">
+												<input type="text" name="First name" placeholder="Your Name" required="">
+											</div>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="w3_agileits_main_grid w3l_main_grid">
+										<div class="agileits_grid">
+											<h5>E-mail </h5>
+												<input type="email" name="Email" placeholder="ex : yourmail@gmail.com" required="">
+										</div>
+									</div>
+									-->
+									<div class="fromtop">
+										<div class="agileinfo_main_grid held">
+											<div class="agileits_w3layouts_grid">
+												<h5>From*</h5>
+												<select id="category1" name="src" required="" class="fsrc">
+													{% for i in fli_info %}
+													<option value="{{i.spoint}}">{{i.spoint}}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+										
+										<div class="agileinfo_main_grid">
+											<div class="agileits_w3layouts_grid">
+												<h5>To*</h5>
+												<select id="category1" name="dst" required="" class="fdst">
+													{% for i in fli_info1 %}
+													<option value="{{i.epoint}}">{{i.epoint}}</option>
+													{% endfor %}
+												</select>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+									
+										<div class="agileinfo_main_grid1">
+											<div class="agileits_w3layouts_grid mim">
+												<h5>Passengers*</h5>
+												<input type="number" name="nop"  required="" max=5 min="1" value="1" style="width: 100%;
+    background: #fff;
+    color: #4B4B4B;
+    padding: 13px;
+    font-size: 14px;
+    border: 1px solid #a9a9a9;
+    box-sizing: border-box;">
+											</div>
+										</div>
+										
+									
+										<div class="clearfix"></div>
+										
+										
+										
+										<div class="agileinfo_main_grid1">
+											<div class="agileits_w3layouts_grid mim">
+											<h5>Journy On*</h5>
+												
+												<div class="agileits_w3layouts_main_grid1">
+													<input class="date" type="date" name="date"  value=""  required="" style="width: 100%;
+    background: #fff;
+    color: #4B4B4B;
+    padding: 13px;
+    font-size: 14px;
+    border: 1px solid #a9a9a9;
+    box-sizing: border-box;">
+												</div>
+												<div class="clearfix"></div>
+											</div>
+										</div>
+										
+										
+										<div class="clearfix"></div>
+											<div class="aitssubmitw3ls">
+												<input type="submit" name="submit" value="Search">
+											</div>{{errorf}}
+								</form>
+							</div>
+						</div>
+						<!--bus start-->
+							<div class="tab-1 resp-tab-content" >
+							<div class="login-top agileinfo">
+								<h2>Search for Buses</h2>
+								
+								<form action="{% url 'searchbus' %}" method="get" onsubmit="return checkfromto()">
+									<!--<div class="w3_agileits_main_grid w3l_main_grid">
+										<div class="agileits_grid">
+											<h5>Name * </h5>
+											<div class="name">
+												<input type="text" name="First name" placeholder="Your Name" required="">
+											</div>
+											<div class="clear"></div>
+										</div>
+									</div>-->
+									<!---<div class="w3_agileits_main_grid w3l_main_grid">
+										<div class="agileits_grid">
+											<h5>Source * </h5>
+											<div class="name">
+												<input type="text" name="src" placeholder="source" required="">
+											</div>
+											<div class="clear"></div>
+										</div>
+									</div>-->
+									
+									<div class="fromtop">
+										<div class="agileinfo_main_grid held">
+											<div class="agileits_w3layouts_grid"><h5>From*</h5>
+												<!--<select  id="category1" name="src" required=""> 
+												
+												</select>-->
+
+												<input type="text" name="src" placeholder="source" required="" id="category1" class="src" onkeypress="postdemo()" onchange="hidedemo()">
+												<div class="result" id="category1" style="display: none;" ></div>
+												
+											</div>
+										</div>
+										{{ error }}{% for ubs in buslist %}
+												{{ ubs.src }}
+												{% endfor %}
+										<div class="agileinfo_main_grid">
+											<div class="agileits_w3layouts_grid">
+												<h5>To*</h5>
+												<input type="text" name="dst" placeholder="To" required=""  style=" outline: none;
+    width: 100%;
+    background: #fff;
+    color: #4B4B4B;
+    padding: 13px;
+    font-size: 14px;
+    border: 1px solid #a9a9a9;
+    box-sizing: border-box;"				 id="stdst" onkeypress="postdst()">
+												<div style=" outline: none;
+    width: 100%;
+    background: #fff;
+    color: #4B4B4B;
+    padding: 13px;
+    font-size: 14px;
+    border: 1px solid #a9a9a9;
+    box-sizing: border-box;
+display: none;" id="resultdst" ></div>
+											</div>
+										</div><div class="w3_agileits_main_grid w3l_main_grid">
+										<div class="agileits_grid">
+											<h5>Passengers * </h5>
+											<div class="name">
+												<input type="number" name="nop"  required="" max=5 min="1" value="1" style="width: 100%;
+    background: #fff;
+    color: #4B4B4B;
+    padding: 13px;
+    font-size: 14px;
+    border: 1px solid #a9a9a9;
+    box-sizing: border-box;">
+											</div>
+											<div class="w3_agileits_main_grid w3l_main_grid">
+										<div class="agileits_grid">
+											<h5>Date * </h5>
+											<div class="name">
+												<input type="date" name="date"  required="" style="width: 100%;
+    background: #fff;
+    color: #4B4B4B;
+    padding: 13px;
+    font-size: 14px;
+    border: 1px solid #a9a9a9;
+    box-sizing: border-box;">
+											</div>
+											<div class="clear"></div>
+										</div>
+									</div>
+											<div class="clear"></div>
+										</div>
+									</div>
+										<div class="clearfix"></div>
+									</div>
+									
+										<!--<div class="agileits_main_grid w3_agileits_main_grid held">
+											<div class="wthree_grid">
+												<h5>Adults*</h5>
+												<select id="category1" name="category1" required="">
+													<option value="category1">01</option>
+													<option value="category2">02</option>
+													<option value="category3">03</option>
+													<option value="category4">04</option>
+													<option value="category2">05</option>
+													<option value="category3">06</option>
+												</select>
+											</div>
+										</div>
+										
+										<div class="agileinfo_main_grid">
+											<div class="agileits_w3layouts_grid">
+												<h5>Children*</h5>
+												<select id="category1" name="category1" required="">
+													<option value="category1">01</option>
+													<option value="category2">02</option>
+													<option value="category3">03</option>
+													<option value="category4">04</option>
+													<option value="category2">05</option>
+													<option value="category3">06</option>
+												</select>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+										
+										<div class="agileinfo_main_grid1">
+											<div class="agileits_w3layouts_grid mim">
+												<h5>Travel Class*</h5>
+												<select id="category2" name="category1" required="">
+													<option value="category1">Economy class</option>
+													<option value="category2">Premium Economy</option>
+													<option value="category3">Business class</option>
+													<option value="category3">First Class</option>
+												</select>
+											</div>
+										</div>
+										
+										<div class="agileits_w3layouts_main_grid w3ls_main_grid agileinfo_main_grid held">
+											<div class="agileinfo_grid">
+											<h5>Departure On*</h5>
+												
+												<div class="agileits_w3layouts_main_grid1">
+													<input class="date" id="datepicker" name="Text" type="text" value="mm/dd/yyyy" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '08/13/2016';}" required="">
+												</div>
+												<div class="clearfix"></div>
+											</div>
+										</div>
+										
+										<div class="agileinfo_main_grid">
+											<div class="agileits_w3layouts_grid">
+												<h5>Journey type*</h5>
+												<select id="category1" name="category1" required="">
+													<option value="category1">One Way</option>
+													<option value="category2">Round trip</option>
+												</select>
+											</div>-->
+										</div>
+										<div class="clearfix"></div>
+											<div class="aitssubmitw3ls">
+												<input type="submit" name="submit" value="Search">
+											</div>
+								</form>
+							</div>
+						</div><!--bus end-->
+
+						<!--<div class="tab-1 resp-tab-content" >
+							<div class="login-top agileits">
+								<h3>Search for Trains</h3>
+								<div class="w3layouts-agileits">
+
+											<div class="w3layoutscontactagileits">
+												<form action="#" method="post">
+													<div class="w3_agileits_main_grid w3l_main_grid">
+														<div class="agileits_grid">
+															<h5>Name * </h5>
+															<div class="name">
+																<input type="text" name="First name" placeholder="Your Name" required="">
+															</div>
+															<div class="clearfix"></div>
+														</div>
+													</div>
+													<div class="w3_agileits_main_grid w3l_main_grid">
+														<div class="agileits_grid">
+															<h5>E-mail </h5>
+																<input type="email" name="Email" placeholder="ex : yourmail@gmail.com" required="">
+														</div>
+													</div>
+
+										<div class="agileits_main_grid w3_agileits_main_grid held">
+											<div class="wthree_grid">
+												<h5>Route</h5>
+												<select id="category" name="category" required="">
+													<option value="none">None</option>
+													<option value="category1">Local</option>
+													<option value="category2">Non-local</option>
+													
+												</select>
+											</div>
+										</div>
+										
+										<div class="agileinfo_main_grid">
+											<div class="agileits_w3layouts_grid">
+												<h5>Number of Passengers*</h5>
+												<select id="category1" name="category1" required="">
+													<option value="category1">01</option>
+													<option value="category2">02</option>
+													<option value="category3">03</option>
+													<option value="category4">04</option>
+													<option value="category2">05</option>
+													<option value="category3">06</option>
+												</select>
+											</div>
+										</div>
+										<div class="clear"></div>
+										<div class="agileinfo_main_grid1">
+											<div class="agileits_w3layouts_grid">
+												<h5>Day*</h5>
+												<select id="category2" name="category1" required="">
+													<option value="category1">Sunday</option>
+													<option value="category2">Monday</option>
+													<option value="category3">Tuesday</option>
+													<option value="category3">Wednesday</option>
+													<option value="category3">Thursday</option>
+													<option value="category3">Friday</option>
+													<option value="category3">Saturday</option>
+												</select>
+											</div>
+										</div>
+										<div class="fromtop">
+										<div class="agileinfo_main_grid held">
+											<div class="agileits_w3layouts_grid">
+												<h5>From*</h5>
+												<select id="category1" name="category1" required="">
+													<option value="category1">Australia</option>
+													<option value="category2">Singapore</option>
+													<option value="category3">America</option>
+													<option value="category3">London</option>
+													<option value="category3">Goa</option>
+													<option value="category3">Canada</option>
+													<option value="category3">Srilanka</option>
+												</select>
+											</div>
+										</div>
+										
+										<div class="agileinfo_main_grid">
+											<div class="agileits_w3layouts_grid">
+												<h5>To*</h5>
+												<select id="category1" name="category1" required="">
+													<option value="category2">Singapore</option>
+													<option value="category1">Australia</option>
+													<option value="category3">America</option>
+													<option value="category3">London</option>
+													<option value="category3">Goa</option>
+													<option value="category3">Canada</option>
+													<option value="category3">Srilanka</option>
+												</select>
+											</div>
+										</div>
+										<div class="clear"></div>
+										</div>
+										
+											<div class="aitssubmitw3ls">
+												<input type="submit" name="submit" value="Search">
+											</div>
+										</form>
+									</div>
+								</div>	
+							</div>
+						</div>	-->
+						<script type="text/javascript">
+							function checkdate()
+							{
+								if($("#cidate").val() > $("#codate").val())
+								{
+									alert("please select approriate date..");
+									return false;
+								}
+								else{
+								return true;
+							}
+							}
+						</script>
+						<div class="tab-1 resp-tab-content" >
+							<div class="login-top agileits">
+								<h3>Search for Hotels</h3>
+								<div class="w3layouts_main_grid">
+									<form action="{% url 'searchhotel' %}" id="hotelform" method="get" class="w3_form_post" onsubmit="return checkdate()">
+										<!--<div class="w3_agileits_main_grid w3l_main_grid">
+											<div class="agileits_grid">
+												<h5>Name * </h5>
+												<div class="nam">
+													<input type="text" name="First name" placeholder="First Name" required="">
+												</div>
+												<div class="nam1">
+													<input type="text" name="Last name" placeholder="Last Name" required="">
+												</div>
+												<div class="clearfix"></div>
+											</div>
+										</div>
+										<div class="w3_agileits_main_grid w3l_main_grid">
+											<div class="agileits_grid">
+												<h5>E-mail </h5>
+													<input type="email" name="Email" placeholder="ex : yourmail@gmail.com" required="">
+											</div>
+										</div>-->
+									<div class="w3_agileits_main_grid w3l_main_grid">
+										
+												<div class="agileits_grid">
+												<h5>Hotel City:</h5>
+												<select id="category"  required="" name="hcity"
+												style="width: 100%;
+    background: #fff;
+    color: #4B4B4B;
+    padding: 13px;
+    font-size: 14px;
+    border: 1px solid #a9a9a9;
+    box-sizing: border-box;">
+												
+													{% for i in hotels %}
+													<option value="{{i.hcity}}">{{i.hcity}}</option>
+													{% endfor %}
+																										
+												</select>
+											</div>
+										</div>
+										<!--<div class="agileits_main_grid w3_agileits_main_grid held">
+											<div class="wthree_grid">
+												<h5>Room Type</h5>
+												<select id="category"  required="" name="roomtype">
+													<
+													{% for h in hroom %}
+												<option value="{{h.roomtype}}">{{h.roomtype}}</option>	{% endfor %}
+												</select>
+											</div>
+										</div>
+										
+										<div class="agileinfo_main_grid">
+											<div class="agileits_w3layouts_grid">
+												<h5>Number of Guests *</h5>
+												<select id="category1"  required="" name="nog">
+													<option value="1">01</option>
+													<option value="2">02</option>
+													<option value="3">03</option>
+													<option value="4">04</option>
+													<option value="2">05</option>
+													<option value="3">06</option>
+												</select>
+											</div>
+										</div>-->
+										<div class="clear"></div>
+										<div class="agileits_grid">
+											<h5>Check In Date * </h5>
+											<div class="name">
+												<input type="date" name="cidate"  required="" style="width: 100%;
+    background: #fff;
+    color: #4B4B4B;
+    padding: 13px;
+    font-size: 14px;
+    border: 1px solid #a9a9a9;
+    box-sizing: border-box;" id="cidate">
+											</div>
+											<div class="clear"></div>
+										</div>
+									</div><div class="agileits_grid">
+											<h5>Check Out Date * </h5>
+											<div class="name">
+												<input type="date" name="codate"  required="" style="width: 100%;
+    background: #fff;
+    color: #4B4B4B;
+    padding: 13px;
+    font-size: 14px;
+    border: 1px solid #a9a9a9;
+    box-sizing: border-box;" id="codate">
+											</div>
+											<div class="clear"></div>
+										</div>
+									</div>										<div class="w3_main_grid">
+											
+											<div class="w3_main_grid_right" style="margin-left: 3%;">
+												<input type="submit" value="Search" >
+											</div>
+											<div class="clearfix"></div>
+										</div>
+									</form>
+								</div>	
+							</div>
+						
+							
+						</div>			
+							</div>
+
+						</div>
+											</div>	
+				</div>
+			</div>	
+		</div>	
+		<div class="clear"></div>
+	</div>	
+<!-- //main-section -->
+<!-- footer -->
+	<div class="agileinfo_copyright" style="background:#ED1C24;">
+		<p>© 2018 TravelTime| Design by PJ</p>
+	</div>
+<!-- //footer -->
+
+<!-- bootstrap-modal-pop-up -->
+	<div class="modal video-modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					Travel Agency
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>						
+				</div>
+					<div class="modal-body">
+						<img src="../static/images/1.jpg" alt=" " class="img-responsive" />
+						<p>Ut enim ad minima veniam, quis nostrum 
+							exercitationem ullam corporis suscipit laboriosam, 
+							nisi ut aliquid ex ea commodi consequatur? Quis autem 
+							vel eum iure reprehenderit qui in ea voluptate velit 
+							esse quam nihil molestiae consequatur, vel illum qui 
+							dolorem eum fugiat quo voluptas nulla pariatur.
+							<i>" Quis autem vel eum iure reprehenderit qui in ea voluptate velit 
+								esse quam nihil molestiae consequatur.</i></p>
+					</div>
+			</div>
+		</div>
+	</div>
+<!-- //bootstrap-modal-pop-up --> 
+<!-- js -->
+	
+<!--script-->
+
+{% endblock %}
